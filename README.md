@@ -24,6 +24,9 @@ It offers a standardized FastAPI-based interface to simplify deployment and inte
 # Clone Repository
 git clone https://github.com/wklee610/VLM-Model-fastapi.git
 
+# Virtual Env
+python -m venv .venv
+
 # Install requirements.txt
 pip install -r requirements.txt
 
@@ -47,7 +50,10 @@ load_dotenv(".env.local")
 load_dotenv(".env")
 ```
 
-
-
-
+## TODO
+- print -> logging
+- doc string
+- gpu manager change (better one)
+- exception / error handler
+- 
 
