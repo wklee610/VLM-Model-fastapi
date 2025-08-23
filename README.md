@@ -9,9 +9,9 @@ It offers a standardized FastAPI-based interface to simplify deployment and inte
 - **Cloud/on-premise optimization**: Seamless deployment in Docker and Kubernetes environments.  
 
 ## Note
-Currently, testing has only been performed with the **VARCO-VISION-2.0-14B** model.  
-Further testing with other models will be conducted, and code updates will follow as needed.
-
+- Currently, testing has only been performed with the **VARCO-VISION-2.0-14B** model.  
+- Further testing with other models will be conducted, and code updates will follow as needed.
+- Check `.env.local` first to run
 
 ## VLM Model Support (To be updated)
 - [**VARCO-VISION-2.0-14B**](https://huggingface.co/NCSOFT/VARCO-VISION-2.0-14B)
@@ -26,6 +26,8 @@ git clone https://github.com/wklee610/VLM-Model-fastapi.git
 
 # Install requirements.txt
 pip install -r requirements.txt
+
+# Fix .env.local
 
 # run
 python app/run.py
