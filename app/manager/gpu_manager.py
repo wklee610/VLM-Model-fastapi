@@ -28,7 +28,6 @@ class GPUManager:
                 return torch.device("cpu")
         
         # etc OS
-        #TODO: 다른 OS가 있나?
         else:
             print(f"Unknown system ({system}). Using CPU")
             return torch.device("cpu")
