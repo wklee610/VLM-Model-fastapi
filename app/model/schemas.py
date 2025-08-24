@@ -25,4 +25,4 @@ class Message(BaseModel):
 
 
 class Conversation(RootModel):
-    root: List[Message] = Field(..., description="대화 내용 리스트")
+    root: List[Message] = Field(..., description="Message List")

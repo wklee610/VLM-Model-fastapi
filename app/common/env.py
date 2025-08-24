@@ -1,8 +1,9 @@
 import os
+import json
 import torch
 from dotenv import load_dotenv
 
-load_dotenv(".env.local")
+load_dotenv(".env.varco")
 
 MODEL_NAME = os.getenv("MODEL_NAME")
 PROJECT_TITLE = os.getenv("PROJECT_TITLE") or f"{MODEL_NAME}-fastapi"
@@ -18,6 +19,23 @@ ATTN_IMPLEMENTATION = os.getenv("ATTN_IMPLEMENTATION")
 DEVICE_MAP = os.getenv("DEVICE_MAP")
 TENSOR_TYPE=os.getenv("TENSOR_TYPE")
 MAX_NEW_TOKENS=int(os.getenv("MAX_NEW_TOKENS"))
+SYSTEM_PROMPT_FILE = os.getenv("SYSTEM_PROMPT_FILE")
+FEW_SHOTS_FILE = os.getenv("FEW_SHOTS_FILE")
+
+def read_txt(file_path: str) -> str:
+    if not file_path or not os.path.exists(file_path):
+        return ""
+    with open(file_path, "r", encoding="utf-8") as f:
+        return f.read().strip()
+
+def read_json(file_path: str):
+    if not file_path or not os.path.exists(file_path):
+        return []
+    with open(file_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+SYSTEM_PROMPT = read_txt(SYSTEM_PROMPT_FILE)
+FEW_SHOTS = read_json(FEW_SHOTS_FILE)
 
 class Env:
     MODEL_NAME = MODEL_NAME
@@ -28,5 +46,9 @@ class Env:
     DEVICE_MAP = DEVICE_MAP
     TENSOR_TYPE = TENSOR_TYPE
     MAX_NEW_TOKENS = MAX_NEW_TOKENS
+    SYSTEM_PROMPT_FILE = SYSTEM_PROMPT_FILE
+    FEW_SHOTS_FILE = FEW_SHOTS_FILE
+    SYSTEM_PROMPT = SYSTEM_PROMPT
+    FEW_SHOTS = FEW_SHOTS
 
 env = Env()
