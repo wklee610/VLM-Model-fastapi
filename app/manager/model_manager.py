@@ -1,3 +1,4 @@
+import json
 import torch
 from transformers import (
     AutoProcessor, 
@@ -12,7 +13,9 @@ class ModelContainer:
         device: torch.device,
         torch_dtype: torch.dtype,
         tensor_type: str,
-        max_new_tokens: int
+        max_new_tokens: int,
+        system_prompt: str,
+        few_shots: json
     ) -> None:
         self.model = model
         self.processor = processor
@@ -20,6 +23,8 @@ class ModelContainer:
         self.torch_dtype = torch_dtype
         self.tensor_type = tensor_type
         self.max_new_tokens = max_new_tokens
+        self.system_prompt = system_prompt
+        self.few_shots = few_shots
 
 
 class ModelManager:
@@ -35,7 +40,9 @@ class ModelManager:
         self.device = device
         self.tensor_type = env.TENSOR_TYPE
         self.max_new_tokens = env.MAX_NEW_TOKENS
-
+        self.system_prompt = env.SYSTEM_PROMPT
+        self.few_shots = env.FEW_SHOTS
+        
     def load(
         self,
     ) -> None:
@@ -56,7 +63,9 @@ class ModelManager:
             self.device,
             self.torch_dtype,
             self.tensor_type,
-            self.max_new_tokens
+            self.max_new_tokens,
+            self.system_prompt,
+            self.few_shots
         )
 
 

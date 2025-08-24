@@ -12,6 +12,8 @@ class ChatGenerator:
         self.torch_dtype = llava_container.torch_dtype
         self.tensor_type = llava_container.tensor_type
         self.max_new_tokens = llava_container.max_new_tokens
+        self.system_prompt = llava_container.system_prompt
+        self.few_shots = llava_container.few_shots
 
     def generate(
         self, 
@@ -19,8 +21,25 @@ class ChatGenerator:
     ) -> str:
         try:
             conversation_dict = [msg.model_dump() for msg in conversation.root]
+            full_prompt = []
+            if self.system_prompt:
+                full_prompt.append(
+                    {
+                        "role": "system",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": self.system_prompt
+                            }
+                        ]
+                    }
+                )
+            if self.few_shots:
+                full_prompt.extend(self.few_shots)
+            full_prompt.extend(conversation_dict)
+            
             inputs = self.processor.apply_chat_template(
-                conversation_dict,
+                full_prompt,
                 add_generation_prompt=True,
                 tokenize=True,
                 return_dict=True,
