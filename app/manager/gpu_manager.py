@@ -31,6 +31,16 @@ class GPUManager:
         else:
             print(f"Unknown system ({system}). Using CPU")
             return torch.device("cpu")
+        
+    def get_tensor_parallel_size(self) -> int:
+        system = platform.system()
+        # NVIDIA GPU
+        if system == "Linux" or system == "Windows":
+            if torch.cuda.is_available():
+                return torch.cuda.device_count()
+        else:
+            # MAC OS
+            return 1
 
     def free_gpu_resources(self) -> None:
         if torch.cuda.is_available():

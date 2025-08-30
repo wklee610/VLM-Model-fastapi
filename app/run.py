@@ -20,9 +20,14 @@ async def lifespan(app: FastAPI):
     # GPU check
     gpu_manager = GPUManager()
     device = gpu_manager.is_gpu_available()
+    tensor_parallel_size = gpu_manager.get_tensor_parallel_size()
     
     # Model
-    model_manager = ModelManager(env, device)
+    model_manager = ModelManager(
+        env, 
+        device, 
+        tensor_parallel_size
+    )
     model_manager.load()
     app.state.model_manager = model_manager
     yield

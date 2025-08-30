@@ -1,6 +1,7 @@
 import os
 import json
 import torch
+from distutils.util import strtobool
 from dotenv import load_dotenv
 
 load_dotenv(".env.varco")
@@ -21,6 +22,11 @@ TENSOR_TYPE=os.getenv("TENSOR_TYPE")
 MAX_NEW_TOKENS=int(os.getenv("MAX_NEW_TOKENS"))
 SYSTEM_PROMPT_FILE = os.getenv("SYSTEM_PROMPT_FILE")
 FEW_SHOTS_FILE = os.getenv("FEW_SHOTS_FILE")
+USE_VLLM = strtobool(os.getenv("USE_VLLM"))
+MAX_MODEL_LEN = int(os.getenv("MAX_MODEL_LEN"))
+MAX_NUM_BATCHED_TOKENS = int(os.getenv("MAX_NUM_BATCHED_TOKENS"))
+TEMPERATURE = float(os.getenv("TEMPERATURE"))
+TOP_P = float(os.getenv("TOP_P"))
 
 def read_txt(file_path: str) -> str:
     if not file_path or not os.path.exists(file_path):
@@ -50,5 +56,10 @@ class Env:
     FEW_SHOTS_FILE = FEW_SHOTS_FILE
     SYSTEM_PROMPT = SYSTEM_PROMPT
     FEW_SHOTS = FEW_SHOTS
+    USE_VLLM = USE_VLLM
+    MAX_MODEL_LEN = MAX_MODEL_LEN
+    MAX_NUM_BATCHED_TOKENS = MAX_NUM_BATCHED_TOKENS
+    TEMPERATURE = TEMPERATURE
+    TOP_P = TOP_P
 
 env = Env()
