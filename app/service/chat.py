@@ -1,3 +1,7 @@
+from typing import (
+    Iterator, 
+    Union
+)
 from vllm import (
     LLM, 
     SamplingParams
@@ -21,28 +25,28 @@ class ChatGenerator:
         self.use_vllm = isinstance(self.model, LLM)
         self.sampling_params = model_container.sampling_params
 
+    def _build_prompt(self, conversation: Conversation):
+        conversation_dict = [msg.model_dump() for msg in conversation.root]
+
+        full_prompt = []
+        if self.system_prompt:
+            full_prompt.append({
+                "role": "system",
+                "content": [{"type": "text", "text": self.system_prompt}]
+            })
+
+        if self.few_shots:
+            full_prompt.extend(self.few_shots)
+
+        full_prompt.extend(conversation_dict)
+        return full_prompt
+
     def generate(
         self, 
-        conversation: Conversation
+        conversation: Conversation,
     ) -> str:
         try:
-            conversation_dict = [msg.model_dump() for msg in conversation.root]
-            full_prompt = []
-            if self.system_prompt:
-                full_prompt.append(
-                    {
-                        "role": "system",
-                        "content": [
-                            {
-                                "type": "text",
-                                "text": self.system_prompt
-                            }
-                        ]
-                    }
-                )
-            if self.few_shots:
-                full_prompt.extend(self.few_shots)
-            full_prompt.extend(conversation_dict)
+            full_prompt = self._build_prompt(conversation)
 
             if self.use_vllm:
                 full_prompt = self.processor.apply_chat_template(

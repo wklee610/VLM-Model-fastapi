@@ -6,7 +6,8 @@ from pydantic import (
 from typing import (
     List, 
     Literal, 
-    Union
+    Union,
+    Optional
 )
 
 class ImageContent(BaseModel):
@@ -26,3 +27,14 @@ class Message(BaseModel):
 
 class Conversation(RootModel):
     root: List[Message] = Field(..., description="Message List")
+
+
+class ChatCompletionMessage(BaseModel):
+    role: Literal["system", "user", "assistant"]
+    content: str
+
+
+class ChatCompletionRequest(BaseModel):
+    model: str
+    messages: List[ChatCompletionMessage]
+    stream: Optional[bool] = False
